@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+import "./App.css";
+import { movies } from "./assets/Data";
+import MovieList from "./components/MovieList";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Trailer from "./components/Trailer";
 function App() {
+  const [listMovie, setListMovie] = useState(movies);
+  const addFilm = (form) => {
+    setListMovie([form, ...listMovie]);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <div className="container-fluid">
+          <Route
+            exact
+            path="/"
+            render={() => <MovieList listMovie={listMovie} addFilm={addFilm} />}
+          />
+        </div>
+        <Route
+          path="/Trailer/:title"
+          render={(props) => <Trailer movie={listMovie} {...props} />}
+        />
+      </Switch>
+    </Router>
   );
 }
 
